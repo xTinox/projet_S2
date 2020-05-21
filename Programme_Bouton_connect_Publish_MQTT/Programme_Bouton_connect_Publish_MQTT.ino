@@ -13,7 +13,7 @@
 #include <PubSubClient.h>
 #include <DNSServer.h>
 #include <ESP8266WebServer.h>
-#include <WiFiManager.h>         //https://github.com/tzapu/WiFiManager
+#include <WiFiManager.h>
 
 const char* mqtt_server = "test.mosquitto.org";
 int mqtt_port = 1883;
