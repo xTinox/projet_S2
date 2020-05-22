@@ -26,8 +26,8 @@ int mqtt_port = 1883;
 const int led_rouge = 13;         // pin D7 du ESP 8266
 const int led_verte = 12;         // pin D6 du ESP 8266
 const int led_bleue = 14;         // pin D5 du ESP 8266
-const int pinBouton = 16;         // pin D0 du ESP 8266
-int boucle=15;             // Variables:
+const int pinBouton = 5;         // pin D1 du ESP 8266
+int boucle=20;             // Variables:
 int etatBouton;                 //
 int tempo;                      //
 int attente=4;                  //
@@ -37,6 +37,7 @@ int resultat=0;                 //
 int RESULTAT=0;                 //
 int valEnregistree = 0;         //
 int freqAllum = 4;
+int duree = 10;
 
 // Declaration "espClient" pour serveur MQTT
 WiFiClient espClient;
@@ -60,6 +61,19 @@ void connecter_au_Wifi(){
     for (int i=255; i>0; i--){
       led(i,i,0);
       delay(freqAllum-2);
+    }
+  }
+}
+
+void Reset_le_Wifi(){
+  for (int i=0; i<5; i++){ 
+    for (int i=0; i<255; i++){
+      led(i,0,0);
+      delay(freqAllum-3);
+    }
+    for (int i=255; i>0; i--){
+      led(i,0,0);
+      delay(freqAllum-3);
     }
   }
 }
@@ -257,8 +271,11 @@ void setup() {
     
     //reset saved settings
     etatBouton = digitalRead(pinBouton);
+    delay(20);
     if (etatBouton == 1){
+      delay(20);
       wifiManager.resetSettings();
+      Reset_le_Wifi();
     }
     //set custom ip for portal
     wifiManager.setAPStaticIPConfig(IPAddress(10,0,1,1), IPAddress(10,0,1,1), IPAddress(255,255,255,0));
@@ -285,7 +302,14 @@ void setup() {
     Serial.print("ESP8266 IP ");
     Serial.println(WiFi.localIP()); 
     Serial.println("Modbus RTU Master Online");
-     
+    etatBouton = digitalRead(pinBouton);
+    delay(20);
+    if (etatBouton == 1){
+      delay(20);
+      principale();
+    }
+    affich();
+    ESP.deepSleep(duree*1000000);
 }
 
 
