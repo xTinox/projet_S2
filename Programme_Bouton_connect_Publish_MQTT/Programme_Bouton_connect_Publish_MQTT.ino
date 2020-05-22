@@ -14,6 +14,11 @@
 #include <DNSServer.h>
 #include <ESP8266WebServer.h>
 #include <WiFiManager.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
+
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP,"fr.pool.ntp.org",7200);
 
 const char* mqtt_server = "test.mosquitto.org";
 int mqtt_port = 1883;
@@ -46,6 +51,18 @@ void led(int r, int v, int b){
   analogWrite(led_bleue, b);
 }
 
+void connecter_au_Wifi(){
+  for (int i=0; i<3; i++){ 
+    for (int i=0; i<255; i++){
+      led(i,i,0);
+      delay(freqAllum-2);
+    }
+    for (int i=255; i>0; i--){
+      led(i,i,0);
+      delay(freqAllum-2);
+    }
+  }
+}
 
 void Result(){
   if (resultat==0){
@@ -219,7 +236,9 @@ void affich(){
   if (!client.connected()) {
     reconnect();
   }
+  timeClient.update();
   client.publish("dossierayantaccestest1", String(RESULTAT).c_str());
+  client.publish("dossierayantaccestest2", String(timeClient.getFormattedTime()).c_str());
   client.loop();
   delay(1000);
 }
@@ -251,6 +270,9 @@ void setup() {
 
     //if you get here you have connected to the WiFi
     Serial.println("connecté :)");
+    connecter_au_Wifi();
+    // Démarrage du client NTP
+    timeClient.begin();
 
     client.setServer(mqtt_server, mqtt_port);
     client.setCallback(callback);

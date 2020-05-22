@@ -14,10 +14,12 @@ ATTENTION : Avant de "Run" le programme veuillez installer les bibliothèques
 from PyQt5 import QtCore, QtGui, QtWidgets
 import paho.mqtt.client as mqtt
 
+topic = ["dossierayantaccestest1","dossierayantaccestest2"]
+
 client = mqtt.Client()
 
 def on_connect(client, userdata, flags, rc):
-    client.subscribe("dossierayantaccestest1")
+    client.subscribe(topic[0])
 
 client.on_connect = on_connect
 
