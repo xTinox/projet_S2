@@ -251,8 +251,8 @@ void affich(){
     reconnect();
   }
   timeClient.update();
-  client.publish("dossierayantaccestest1", String(RESULTAT).c_str());
-  client.publish("dossierayantaccestest2", String(timeClient.getFormattedTime()).c_str());
+  client.publish("horizontel1", String(RESULTAT).c_str());
+  client.publish("horizontel2", String(timeClient.getFormattedTime()).c_str());
   client.loop();
   delay(1000);
 }
@@ -309,7 +309,7 @@ void setup() {
       principale();
     }
     affich();
-    ESP.deepSleep(duree*1000000);
+    //ESP.deepSleep(duree*1000000);
 }
 
 
