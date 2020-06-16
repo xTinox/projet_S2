@@ -259,33 +259,26 @@ void affich(){
 
 // Fonction nécessaire à l'installation (initialisation, déclaration des ports, connexion au Wifi)
 void setup() {
-    // put your setup code here, to run once:
+  
     Serial.begin(9600);
     pinMode(led_rouge, OUTPUT);
     pinMode(led_verte, OUTPUT);
     pinMode(led_bleue, OUTPUT);
 
-
-    //WiFiManager
-    //Local intialization. Once its business is done, there is no need to keep it around
-    
-    //reset saved settings
-    etatBouton = digitalRead(pinBouton);
+    etatBouton = digitalRead(pinBouton); //Lire état bouton, si ce dernier est appuyé (à l'instant du démarrage) la Wifi sera réinitialisée
     delay(20);
     if (etatBouton == 1){
       delay(20);
       wifiManager.resetSettings();
       Reset_le_Wifi();
     }
-    //set custom ip for portal
+    // IP choisi
     wifiManager.setAPStaticIPConfig(IPAddress(10,0,1,1), IPAddress(10,0,1,1), IPAddress(255,255,255,0));
 
-    //fetches ssid and pass from eeprom and tries to connect
-    //if it does not connect it starts an access point with the specified name
-    //and goes into a blocking loop awaiting configuration
-    wifiManager.autoConnect("Bouton Horizon Telecom","horizontel");
+    wifiManager.autoConnect("Bouton Horizon Telecom","horizontel"); //(Mode "Point d'Accès"),il devient un point d'accès Wifi. 
+    //On configurera sa connection au réseau de l'entreprise grâce à un portail de connection 
 
-    //if you get here you have connected to the WiFi
+    // Si l'ESP a réussi à se connecter sur la Wifi (Mode "Station")
     Serial.println("connecté :)");
     connecter_au_Wifi();
     // Démarrage du client NTP
