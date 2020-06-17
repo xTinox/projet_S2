@@ -14,7 +14,7 @@ ATTENTION : Avant de "Run" le programme veuillez installer les bibliothèques
 from PyQt5 import QtCore, QtGui, QtWidgets
 import paho.mqtt.client as mqtt
 
-topic = ["dossierayantaccestest1","dossierayantaccestest2"]
+topic = ["horizontel1","horizontel2"]
 
 client = mqtt.Client()
 
